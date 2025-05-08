@@ -14,10 +14,7 @@ public class testStanza {
 	private Attrezzo t = new Attrezzo("osso",3);
 	private Attrezzo t2 = new Attrezzo("martello",4);
 	
-    
-
-    	
-	
+   
 	@Test
 	void testAddAttrezzo() {
 			
