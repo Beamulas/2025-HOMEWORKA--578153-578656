@@ -3,8 +3,10 @@ package it.uniroma3.diadia;
 
 import java.util.Scanner;
 
-import IOConsole.IOConsole;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
+import it.uniroma3.diadia.comandi.Comando;
+import it.uniroma3.diadia.comandi.FabbricaDiComandi;
+import it.uniroma3.diadia.comandi.FabbricaDiComandiFisarmonica;
 import it.uniroma3.diadia.ambienti.Stanza;
 
 /**
@@ -20,7 +22,8 @@ import it.uniroma3.diadia.ambienti.Stanza;
  */
 
 public class DiaDia {
-
+	
+	//messaggio iniziale che mi spiega il gioco
 	static final private String MESSAGGIO_BENVENUTO = ""+
 			"Ti trovi nell'Universita', ma oggi e' diversa dal solito...\n" +
 			"Meglio andare al piu' presto in biblioteca a studiare. Ma dov'e'?\n"+
@@ -37,16 +40,16 @@ public class DiaDia {
 	private Partita partita;
 	private IOConsole io;
 	
-	public DiaDia() {
+	public DiaDia(IO io) {
+		this.io = new IOConsole();
 		this.partita = new Partita();
-
 	}
 
 	public void gioca() {
 		String istruzione; 
-		Scanner scannerDiLinee;
+		Scanner scannerDiLinee;	//per leggere da tastiera
 
-		System.out.println(MESSAGGIO_BENVENUTO);
+		System.out.println(MESSAGGIO_BENVENUTO);	//appena inizia il gioco stampo il messaggio iniziale
 		scannerDiLinee = new Scanner(System.in);		
 		do
 			istruzione = scannerDiLinee.nextLine();
@@ -56,32 +59,28 @@ public class DiaDia {
 	}   
 
 
+	
 	/**
 	 * Processa una istruzione 
-	 *
 	 * @return true se l'istruzione e' eseguita e il gioco continua, false altrimenti
 	 */
 	private boolean processaIstruzione(String istruzione) {
-		Comando comandoDaEseguire = new Comando(istruzione);
-
-		if(comandoDaEseguire.getNome() != null) 
-			if (comandoDaEseguire.getNome().equals("fine")) {
-				this.fine(); 
-				return true;
-			} else if (comandoDaEseguire.getNome().equals("vai"))
-				this.vai(comandoDaEseguire.getParametro());
-			else if (comandoDaEseguire.getNome().equals("aiuto"))
-				this.aiuto();
-
-
-			else
-				System.out.println("Comando sconosciuto");
-		if (this.partita.vinta()) {
-			System.out.println("Hai vinto!");
-			return true;
-		} else
-			return false;
-	}   
+		
+		Comando comandoDaEseguire; 
+		FabbricaDiComandiFisarmonica factory = new FabbricaDiComandiFisarmonica();
+		
+		comandoDaEseguire = factory.costruisciComando(istruzione); 
+		comandoDaEseguire.esegui(this.partita); //il metodo esegui è polimorfo, lasciamo al comando la responsabilità di eseguire il comando
+		if(this.partita.vinta()) {
+			io.mostraMessaggio("Hai vinto!!");
+		}
+		if(!this.partita.giocatoreIsVivo()) {
+			io.mostraMessaggio("Hai esaurito i tuoi CFU......");
+		}
+		
+		return this.partita.isFinita();
+	
+	}
 
 	// implementazioni dei comandi dell'utente:
 
@@ -113,6 +112,7 @@ public class DiaDia {
 		System.out.println(partita.getStanzaCorrente().getDescrizione());
 	}
 	
+	/**
 	private void prendi(String nomeAttrezzo) {
 		if (nomeAttrezzo == null)
 			io.mostraMessaggio("Quale attrezzo vuoi prendere?");
@@ -128,7 +128,7 @@ public class DiaDia {
 					io.mostraMessaggio("ERRORE: Non puoi prendere l'attrezzo!");
 			}
 		}
-	}
+	}**/
 
 	private void posa(String nomeAttrezzo) {
 		if (nomeAttrezzo == null)
@@ -145,15 +145,10 @@ public class DiaDia {
 		}
 	}
 
-	/**
-	 * Comando "Fine".
-	 */
-	private void fine() {
-		System.out.println("Grazie di aver giocato!");  // si desidera smettere
-	}
-
+	
 	public static void main(String[] argc) {
-		DiaDia gioco = new DiaDia();
+		IO io = new IOConsole();
+		DiaDia gioco = new DiaDia(io);
 		gioco.gioca();
 	}
 }

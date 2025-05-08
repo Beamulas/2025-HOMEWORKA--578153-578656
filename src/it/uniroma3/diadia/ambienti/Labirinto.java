@@ -1,10 +1,13 @@
 package it.uniroma3.diadia.ambienti;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
+/*la classe Labirinto si occupa della creazione del labirinto vero e proprio andando a creare tutte le stanze*/
 public class Labirinto {
+	
     private Stanza stanzaIniziale;
     private Stanza stanzaFinale;
 
+    //costruttore generico
     public Labirinto() {
         creaStanze();
     }
@@ -42,6 +45,7 @@ public class Labirinto {
         this.stanzaFinale = biblioteca;
     }
 
+    //metodi getter e setter
     public Stanza getStanzaIniziale() {
         return this.stanzaIniziale;
     }
@@ -49,4 +53,12 @@ public class Labirinto {
     public Stanza getStanzaFinale() {
         return this.stanzaFinale;
     }
+    
+    public void setStanzaIniziale(Stanza stanza) {
+    	this.stanzaIniziale = stanza; 
+    }
+    public void setStanzaFinale(Stanza stanza) {
+    	this.stanzaFinale = stanza;
+    }
+    
 }

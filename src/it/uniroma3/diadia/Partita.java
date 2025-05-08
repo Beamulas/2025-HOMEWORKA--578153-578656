@@ -16,11 +16,12 @@ import it.uniroma3.diadia.giocatore.Giocatore;
 
 public class Partita {
 
-	static final private int CFU_INIZIALI = 20;
+	//inizializzazione constante
+	static final private int CFU_INIZIALI = 20;	//sono le vite iniziali
 
 	private Stanza stanzaCorrente;
-	//private Stanza stanzaVincente;
-	private boolean finita;
+	//private Stanza stanzaFinale; 
+	private boolean finita;	//mi aiuta a verificare se la partita è finita overro quando Cfu = 0
 	private int cfu;
 	private Labirinto lab;
 	private Giocatore giocatore;
@@ -30,7 +31,7 @@ public class Partita {
 		//creaStanze();
 		this.lab = new Labirinto();
         this.stanzaCorrente = lab.getStanzaIniziale();
-		lab = new Labirinto();
+       //this.stanzaFinale = lab.getStanzaFinale();
 		this.finita = false;
 		this.cfu = CFU_INIZIALI;
 		this.giocatore = new Giocatore();
@@ -53,7 +54,7 @@ public class Partita {
 	 * @return vero se partita vinta
 	 */
 	public boolean vinta() {
-        return this.getStanzaCorrente().equals(this.lab.getStanzaFinale());
+        return this.getStanzaCorrente() == this.lab.getStanzaFinale();
     }
 
 	/**
@@ -66,7 +67,6 @@ public class Partita {
 
 	/**
 	 * Imposta la partita come finita
-	 *
 	 */
 	public void setFinita() {
 		this.finita = true;
@@ -75,5 +75,15 @@ public class Partita {
 	//metodo getter per il giocatore
 	public Giocatore getGiocatore() {
 		return this.giocatore;
+	}
+	
+	
+	/**@return true se il giocatore è vivo, false altrimenti*/
+	public boolean giocatoreIsVivo() {
+		
+		if(giocatore.getCfu() <= 0) {
+			return false;
+		}
+		return true;
 	}
 }

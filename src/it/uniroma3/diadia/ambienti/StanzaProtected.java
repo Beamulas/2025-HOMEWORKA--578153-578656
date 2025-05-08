@@ -2,17 +2,7 @@ package it.uniroma3.diadia.ambienti;
 
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
-/**
- * Classe Stanza - una stanza in un gioco di ruolo.
- * Una stanza e' un luogo fisico nel gioco.
- * E' collegata ad altre stanze attraverso delle uscite.
- * Ogni uscita e' associata ad una direzione.
- * 
- * @author docente di POO 
- * @see Attrezzo
- * @version base
- */
-public class Stanza {
+public class StanzaProtected {
 
 	//sono costanti
 	static final private int NUMERO_MASSIMO_DIREZIONI = 4;
@@ -21,13 +11,12 @@ public class Stanza {
 	private String nome;	//nome della stanza
 
 	//dichiaro il numero di attrezzi all'interno della stanza
-	private Attrezzo[] attrezzi;
-	private int numeroAttrezzi;
+	protected Attrezzo[] attrezzi;
+	protected int numeroAttrezzi;
 	/*li metto protected così qualsiasi classe che estenda Stanza può accedere alle sue variabili di istanza
 	 *attrezzi e numeroAttrezzi*/
-	
-	
-	
+
+
 	private Stanza[] stanzeAdiacenti;
 	private int numeroStanzeAdiacenti;
 
@@ -37,7 +26,7 @@ public class Stanza {
 	 * Crea una stanza. Non ci sono stanze adiacenti, non ci sono attrezzi.
 	 * @param nome il nome della stanza
 	 */
-	public Stanza(String nome) {
+	public StanzaProtected(String nome) {
 		this.nome = nome;
 		this.numeroStanzeAdiacenti = 0;
 		this.numeroAttrezzi = 0;
@@ -154,10 +143,8 @@ public class Stanza {
 		boolean trovato;
 		trovato = false;
 		for (Attrezzo attrezzo : this.attrezzi) {
-			if (attrezzo != null && attrezzo.getNome().equals(nomeAttrezzo)) {
+			if (attrezzo.getNome().equals(nomeAttrezzo))
 				trovato = true;
-			}
-				
 		}
 		return trovato;
 	}
@@ -173,7 +160,7 @@ public class Stanza {
 		Attrezzo attrezzoCercato;
 		attrezzoCercato = null;
 		for (Attrezzo attrezzo : this.attrezzi) {
-			if (attrezzo != null && attrezzo.getNome().equals(nomeAttrezzo))
+			if (attrezzo.getNome().equals(nomeAttrezzo))
 				attrezzoCercato = attrezzo;
 		}
 		return attrezzoCercato;	
@@ -198,7 +185,7 @@ public class Stanza {
 		}
 		return false;
 	}
-	
+
 	/**
 	 *@return la stringa che mi dice in che direzione devo andare*/
 	public String[] getDirezioni() {
@@ -207,5 +194,9 @@ public class Stanza {
 			direzioni[i] = this.direzioni[i];
 		return direzioni;
 	}
+
+
+
+
 
 }
