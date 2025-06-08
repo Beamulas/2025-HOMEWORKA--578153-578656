@@ -5,46 +5,53 @@ import java.util.List;
 
 public class IOSimulator implements IO {
 
+	private List<String> righeLette;
+	private int indiceRigheLette; //per tenere conto di quante righe abbiamo letto
 
-	private List<String> messaggiStampati; 
-	private List<String> righeDaLeggere; 
-	private int indice;	//mi deve indicare la lettura
-
-
-
-	//costruttore 
-	public IOSimulator(List<String> righeDaLeggere) {
-		this.messaggiStampati = new ArrayList<>(); 
-		this.righeDaLeggere = new ArrayList<>(righeDaLeggere);
-		this.indice = 0;
+	public List<String> getMessaggiProdotti() {
+		return messaggiProdotti;
 	}
 
+	public void setMessaggiProdotti(List<String> messaggiProdotti) {
+		this.messaggiProdotti = messaggiProdotti;
+	}
 
+	//forse si potrebbe inserire una mappa al posto della lista per ricordare ogni riga letta quale messaggi abbia prodotto
+	private List<String> messaggiProdotti;
+	private int indiceMessaggiProdotti;
+	private int indiceMessaggiMostrati;
+	
+	//costruttore
+	public IOSimulator(List<String> righeDaLeggere) {
+		this.righeLette = righeDaLeggere;
+		this.indiceRigheLette = 0;
+		this.indiceMessaggiMostrati = 0;
+		this.messaggiProdotti = new ArrayList<String>();
+	}
 
+	public String nextMessaggio() {
+		String next = this.messaggiProdotti.get(indiceMessaggiMostrati);
+		this.indiceMessaggiMostrati++;
+		return next;
+	}
 
-	@Override
-	public void mostraMessaggio(String messaggio) {
-		System.out.println(messaggio); 
-		this.messaggiStampati.add(messaggio);
+	public boolean hasNextMessaggio() {
+		return this.indiceMessaggiMostrati < this.indiceMessaggiProdotti;
 	}
 
 	@Override
 	public String leggiRiga() {
-		
-		if(indice < righeDaLeggere.size()) {
-			String riga = righeDaLeggere.get(indice); 
-			indice++;
-			return riga;
-		}
-		else {
-			return null; //potrei anche gestire il caso in cui non ci sono più righe da leggere
-		}
+		String riga = null;
+
+		riga = this.righeLette.get(indiceRigheLette);
+		this.indiceRigheLette++;
+		return riga;
 	}
 
-
-	public List<String> getMessaggiStampati() {
-		return new ArrayList<>(messaggiStampati);
+	@Override
+	public void mostraMessaggio(String msg) {
+		this.messaggiProdotti.add(this.indiceMessaggiProdotti, msg);
+		this.indiceMessaggiProdotti++;
 	}
-
 
 }

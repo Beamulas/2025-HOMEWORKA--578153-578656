@@ -74,8 +74,4 @@ public class StanzaMagicaProtected extends StanzaProtected{
 	public int getSogliaMagica() {
 		return this.sogliaMagica;
 	}
-	
-	
-	
-	
 }

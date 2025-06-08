@@ -3,45 +3,24 @@ package it.uniroma3.diadia.comandi;
 import it.uniroma3.diadia.Partita;
 
 
-/*classe che implementa l'interfaccia Comando. Quando l'utente seleziona il comando "guarda" permette di vedere il contenuto
- *della stanza corrente*/
-public class ComandoGuarda implements Comando {
+/*prima questa classe implementava la classe Comando. Ora invece che usare un'interfaccia estende la classe AbstractComando che è una classe di tipo astratto. 
+ *Così facendo non c'è più bisogno di utilizzare implementazioni vuote come quelle del metodo setParametro(). Ricordo che nelle classi astratte può essere inserito 
+ *solo l'invocazione del metodo tralasciando il suo corpo che poi verrà implementato nelle classi concrete*/
+public class ComandoGuarda extends AbstractComando{
 
-	private String parametro;
-	private String nome;
+	private final static String NOME = "guarda";
 	
-	@Override
-	public void setParametro(String parametro) {
-		this.parametro = parametro;
-	}
-	
-	/**
-	 * @author matteo 
-	 * @version base
-	 * @return metodo che stampa le informazioni relative alla stanza passata come parametro
-	 **/
 	@Override
 	public void esegui(Partita partita) {
-
+		
+		//se la partita non è finita
 		if(!partita.isFinita()) {
-			//System.out.println("Stai guardando : " + partita.getStanzaCorrente().getNome());
-			System.out.println("Aula : " + partita.getStanzaCorrente().getDescrizione());
+			this.getIo().mostraMessaggio("Aula : " + partita.getStanzaCorrente().getDescrizione());
 		}
-	}
-
-	
-
-	@Override
-	public String getParametro() {
-		return this.parametro;
 	}
 
 	@Override
 	public String getNome() {
-		// TODO Auto-generated method stub
-		return this.nome;
+		return NOME;
 	}
-
-
-
 }

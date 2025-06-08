@@ -65,44 +65,6 @@ public class StanzaMagica extends Stanza{
 		//altrimento ritornerebbe se stesso e non vogliamo che questo metodo sia ricorsivo
 	}
 	
-	
-	/*visto che ho cambiato le istanze di Stanza da private a protected posso riscrivere il metodo addAttrezzo nel seguente modo
-	 *è possibile accedere ad un membro protected da tutte le classi estese, e da tutte le classi dello stesso package.*/
-	/*
-	public boolean addAttrezzo2(Attrezzo attrezzo) {
-		
-		this.contatoreAttrezziPosati++; 
-		
-		//verifico se ho più attrezzi che valore della soglia magica
-		if(this.contatoreAttrezziPosati > this.sogliaMagica) {
-			attrezzo = this.modificaAttrezzo(attrezzo);
-		}
-		if(this.numeroAttrezzi < this.attrezzi.length) {
-			this.attrezzi[this.numeroAttrezzi] = attrezzo;
-			this.numeroAttrezzi++;
-			return true;
-		}
-		else {
-			return false;
-		}	
-	}*/
-	/*per ora la lascio come addAttrezzo2 perchè non ho capito se è questa quella corretta o solo una variante proposta dal professore per 
-	 *imparare ad usare le istanze protected*/
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	//metodi getter e setter
 	public void setSogliaMagica(int sogliaMagica) {
 		this.sogliaMagica = sogliaMagica;

@@ -1,15 +1,23 @@
 package it.uniroma3.diadia.giocatore;
 
+import it.uniroma3.diadia.Configurazione;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
 /*classe che si occupa di gestire le informazioni relative al giocatore come i CFU che rappresentano le vite*/
 public class Giocatore {
 	
 	//costante
-	static final private int CFU_INIZIALI = 20;
+	static final public int CFU_INIZIALI = Configurazione.getCFU(); //costante presa dal file
 	
 	private int cfu;
 	private Borsa borsa;
+	
+	//costruttore
+	public Giocatore(int cfu) {
+		this.cfu = cfu;
+		this.borsa = new Borsa();
+	}
+	
 	
 	/*serve per inizializzare i cfu iniziali (le vite) e la borsa del giocatore (l'inventario)*/
 	public Giocatore() {
@@ -50,7 +58,4 @@ public class Giocatore {
 	public void setBorsa(Borsa borsa) {
 		this.borsa = borsa;
 	}
-
-    
-  
 }

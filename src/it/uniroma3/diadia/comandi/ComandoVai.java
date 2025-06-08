@@ -1,79 +1,48 @@
 package it.uniroma3.diadia.comandi;
 
+import it.uniroma3.diadia.ambienti.*;
+import it.uniroma3.diadia.giocatore.Giocatore;
 import it.uniroma3.diadia.Partita;
-import it.uniroma3.diadia.ambienti.Stanza;
 
 /**
  * @author matteo
  * @versio base*/
-public class ComandoVai implements Comando {
 
+/*prima questa classe implementava la classe Comando. Ora invece che usare un'interfaccia estende la classe AbstractComando che è una classe di tipo astratto. 
+ *Così facendo non c'è più bisogno di utilizzare implementazioni vuote come quelle del metodo setParametro(). Ricordo che nelle classi astratte può essere inserito 
+ *solo l'invocazione del metodo tralasciando il suo corpo che poi verrà implementato nelle classi concrete*/
+public class ComandoVai extends AbstractComando {
 
-	private String direzione; 
-	private String parametro;
-
-	//costruttore
-	public ComandoVai(String direzione) {
-		this.direzione = direzione; 
-	}
-	//costruttorre
-	public ComandoVai() {
-		this.direzione = null;
-	}
-
+private final static String NOME = "vai";
+	
 	@Override
 	public void esegui(Partita partita) {
-
-		//devo metterci il codice per cambiare stanza
-		Stanza stanzaCorrente = partita.getStanzaCorrente(); 
-		Stanza prossimaStanza = null;	//non setto la stanza successiva 
-
-		//verifico se ho impostato la direzione 
-		if(direzione == null) {
-			System.out.println("Dove vuoi andare? Devi specificare una direzione"); 
+		Stanza stanzaCorrente = partita.getStanzaCorrente();
+		Stanza prossimaStanza = null;
+		if (this.getParametro() == null) {
+			this.getIo().mostraMessaggio("Dove vuoi andare? Devi specificare una direzione");
+		}
+		if(this.getParametro()!=null )// && (Direzione.valueOf(this.getParametro()).getClass() != Direzione.class))
+			try {
+			prossimaStanza = stanzaCorrente.getStanzaAdiacente(Direzione.valueOf(this.getParametro()));
+			} catch(IllegalArgumentException e) {
+				this.getIo().mostraMessaggio("Direzione inesistente");
+				return;
+			}
+			
+			if (prossimaStanza == null) {
+			this.getIo().mostraMessaggio("Direzione inesistente");
 			return;
 		}
 
-		//inizializzo la stanza successiva 
-		prossimaStanza = stanzaCorrente.getStanzaAdiacente(this.direzione); 
-		//la stanza successiva è quella adiacente alla stanza corrente rispetto alla direzione data
-
-
-		if(prossimaStanza == null) {
-			System.out.println("Questa direzione non estiste"); 
-			return; 
-		}
-
-		//la stanza successiva diventa la corrente percè ho cambiato stanza
 		partita.setStanzaCorrente(prossimaStanza);
-		System.out.println(partita.getStanzaCorrente().getNome()); //prendo il nome della nuova stanza corrente
-
-		//vado a togliere una vita togliendo un Cfu
-		partita.getGiocatore().setCfu(partita.getGiocatore().getCfu()-1);
-
-
+		this.getIo().mostraMessaggio(partita.getStanzaCorrente().getNome());
+		Giocatore giocatore = partita.getGiocatore();
+		giocatore.setCfu(giocatore.getCfu() - 1);
 	}
-
-	@Override
-	public void setParametro(String parametro) {
-		this.parametro = parametro;
-	}
-
-	//metodi getter e setter 
-	public void setDirezione(String direzione) {
-		this.direzione = direzione; 
-	}
-	public String getDirezione() {
-		return this.direzione; 
-	}
-	@Override
-	public String getParametro() {
-		return this.parametro;
-	}
+	
 	@Override
 	public String getNome() {
-		
-		return this.direzione;
+		return NOME;
 	}
-
 }

@@ -1,77 +1,35 @@
 package it.uniroma3.diadia.comandi;
 
 import it.uniroma3.diadia.Partita;
-import it.uniroma3.diadia.ambienti.Stanza;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
-import it.uniroma3.diadia.giocatore.Giocatore;
-
-public class ComandoPrendi implements Comando{
 
 
-	private String nomeOggetto;
+/*prima questa classe implementava la classe Comando. Ora invece che usare un'interfaccia estende la classe AbstractComando che è una classe di tipo astratto. 
+ *Così facendo non c'è più bisogno di utilizzare implementazioni vuote come quelle del metodo setParametro(). Ricordo che nelle classi astratte può essere inserito 
+ *solo l'invocazione del metodo tralasciando il suo corpo che poi verrà implementato nelle classi concrete*/
+public class ComandoPrendi extends AbstractComando{
 
+	private final static String NOME = "prendi";
 	
-	/*
-	@Override
-	public void esegui(Partita partita) {
-		// TODO Auto-generated method stub
-		Stanza stanzaCorrente = partita.getStanzaCorrente();
-		Attrezzo attrezzo = stanzaCorrente.getAttrezzo(nomeOggetto);
-		
-		if (attrezzo != null) {	
-			partita.getGiocatore().getBorsa().addAttrezzo(attrezzo);
-			stanzaCorrente.removeAttrezzo(attrezzo);
-			System.out.println("Hai preso: " + attrezzo.getNome());
-		} else {
-			System.out.println("Oggetto non trovato.");
-			}
-	}*/
-	
-
 	@Override	
 	public void esegui(Partita partita) {
-		if (nomeOggetto == null) {
-			System.out.println("Quale attrezzo vuoi prendere?");
-		}else {
-			Stanza stanzaCorrente = partita.getStanzaCorrente();
-			Attrezzo attrezzo = stanzaCorrente.getAttrezzo(nomeOggetto);
-			if (attrezzo == null) {
-				System.out.println("ERRORE: L'attrezzo che hai inserito non esiste nella stanza!");
-			} else {
-				if (partita.getGiocatore().prendereAttrezzo(attrezzo)) {
-					stanzaCorrente.removeAttrezzo(attrezzo);
-					System.out.println("Hai preso: " + nomeOggetto);
-				} else {
-					System.out.println("ERRORE: Non puoi prendere l'attrezzo!");
-				}
+		Attrezzo attrezzo = partita.getLabirinto().getStanzaCorrente().getAttrezzo(this.getParametro());
+		if(attrezzo ==null) {
+			this.getIo().mostraMessaggio("Attrezzo non presente nella stanza!");
+		} 
+		else {
+			if(partita.getGiocatore().getBorsa().getPesoRimanente(attrezzo)) {
+				partita.getGiocatore().getBorsa().addAttrezzo(attrezzo);
+				partita.getLabirinto().getStanzaCorrente().removeAttrezzo(attrezzo);
+			} 
+			else
+				this.getIo().mostraMessaggio("Attrezzo troppo pesante per entrare nella borsa!");
 			}
-		}
-}
-
-
-	
-
-	
-
-
-
-
-	@Override
-	public void setParametro(String parametro) {
-		this.nomeOggetto = parametro;
-
-	}
-
-	@Override
-	public String getParametro() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
 	public String getNome() {
-		// TODO Auto-generated method stub
-		return null;
+		return NOME;
 	}
 
 }

@@ -7,12 +7,10 @@ public class StanzaBuia extends Stanza{
 	
 	//costuttore del sottotipo
 	public StanzaBuia(String nome, String nomeAttrezzoCercato) {
-		super(nome);
+		super(nome); //il nome lo prendo dal supertipo
 		this.nomeAttrezzoCercato = nomeAttrezzoCercato;
 	}
 
-	
-	
 	@Override
 	public String getDescrizione() {
 		if(this.hasAttrezzo(nomeAttrezzoCercato)) {
@@ -21,7 +19,5 @@ public class StanzaBuia extends Stanza{
 		else {
 			return "qui c'è buoio pesto";
 		}
-	}
-	
-	
+	}	
 }

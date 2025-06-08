@@ -113,23 +113,23 @@ public class StanzaProtected {
 	 * stampadone la descrizione, le uscite e gli eventuali attrezzi contenuti
 	 * @return la rappresentazione stringa
 	 */
+	@Override
 	public String toString() {
 		StringBuilder risultato = new StringBuilder();
 		risultato.append(this.nome);
 		risultato.append("\nUscite: ");
-		for (String direzione : this.direzioni)
-			if (direzione!=null)
+		for (String direzione : this.direzioni) {
+			if (direzione!=null) {
 				risultato.append(" " + direzione);
+			}	
+		}
+	
 		risultato.append("\nAttrezzi nella stanza: ");
-
 
 		for (Attrezzo attrezzo : this.attrezzi) {
 			if(attrezzo != null) {
 				risultato.append(attrezzo.toString()+" ");
 			}
-
-
-
 		}
 
 		return risultato.toString();
@@ -194,9 +194,4 @@ public class StanzaProtected {
 			direzioni[i] = this.direzioni[i];
 		return direzioni;
 	}
-
-
-
-
-
 }

@@ -1,48 +1,35 @@
 package it.uniroma3.diadia.comandi;
 
 import it.uniroma3.diadia.Partita;
-import it.uniroma3.diadia.giocatore.*;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
-public class ComandoPosa implements Comando{
+/*prima questa classe implementava la classe Comando. Ora invece che usare un'interfaccia estende la classe AbstractComando che è una classe di tipo astratto. 
+ *Così facendo non c'è più bisogno di utilizzare implementazioni vuote come quelle del metodo setParametro(). Ricordo che nelle classi astratte può essere inserito 
+ *solo l'invocazione del metodo tralasciando il suo corpo che poi verrà implementato nelle classi concrete*/
+public class ComandoPosa extends AbstractComando{
 
-	private String nomeOggetto;
+	private final static String NOME = "posa";
 
 	@Override
 	public void esegui(Partita partita) {
-		// TODO Auto-generated method stub
-		Borsa borsa = partita.getGiocatore().getBorsa();
-		Attrezzo attrezzo = borsa.getAttrezzo(nomeOggetto); 
-
-
-		if(attrezzo != null) {
-			borsa.removeAttrezzo(nomeOggetto); 
-			partita.getStanzaCorrente().addAttrezzo(attrezzo); 
-			System.out.println("Hai posato: " + nomeOggetto);
-		}else {
-			System.out.println("Attrezzo non trovato nell'inventario");
+		
+		Attrezzo attrezzo = partita.getGiocatore().getBorsa().getAttrezzo(this.getParametro());
+		if(attrezzo == null) {
+			this.getIo().mostraMessaggio("Attrezzo non presente nella borsa!");
+			return;
 		}
-
-
-	}
-
-	@Override
-	public void setParametro(String parametro) {
-		// TODO Auto-generated method stub
-		this.nomeOggetto = parametro;
-
-	}
-
-	@Override
-	public String getParametro() {
-		// TODO Auto-generated method stub
-		return null;
+		if(partita.getStanzaCorrente().getNumeroAttrezziPossibili() > 0) {
+			partita.getLabirinto().getStanzaCorrente().addAttrezzo(attrezzo);
+			partita.getGiocatore().getBorsa().removeAttrezzo(this.getParametro());
+		}
+		else {
+			this.getIo().mostraMessaggio("Non c'e' spazio nella stanza per poter inserire questo attrezzo!");
+		}
 	}
 
 	@Override
 	public String getNome() {
-		// TODO Auto-generated method stub
-		return null;
+		return NOME;
 	}
 
 }
