@@ -1,61 +1,58 @@
 package it.uniroma3.test.diadia.ambienti;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
+import it.uniroma3.diadia.ambienti.Direzione;
 import it.uniroma3.diadia.ambienti.Stanza;
 import it.uniroma3.diadia.ambienti.StanzaBloccata;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
-class StanzaBloccataTest {
-	
-	Stanza s1; 
-	Stanza s2; 
-	StanzaBloccata stanzaBloccata;
-	Attrezzo attrezzo; 
-	
-	@BeforeEach
-	void setUp() {
-		this.attrezzo = new Attrezzo("Piede di porco",2); 
-		this.s1 = new Stanza("Stanza A"); 
-		this.s2 = new Stanza("Stanza B");
-		this.stanzaBloccata = new StanzaBloccata("Stanza A bloccata","sud","Piede di porco" );
-		stanzaBloccata.impostaStanzaAdiacente("sud", s1);
-		stanzaBloccata.addAttrezzo(attrezzo);
-	}
+public class StanzaBloccataTest {
 
-	@Test
-	void testGetStanzaAdiacenteBloccata() {
-		assertEquals(stanzaBloccata, stanzaBloccata.getStanzaAdiacente("sud"));
-	}
+	private StanzaBloccata sb;
+	private Stanza s;
+	private Attrezzo a;
 	
-	@Test
-	void testgetStanzaAdiacenteNonBloccata() {
-	
-		assertNotEquals(s2.getNome(),stanzaBloccata.getStanzaAdiacente("sud").getNome());
-	}
-	@Test
-	void testgetStanzaAdiacenteNull() {
+	@Before
+	public void setUp() throws Exception {
+		sb = new StanzaBloccata("StanzaBloccata", Direzione.ovest, "grimaldello");
+		s = new Stanza("Stanzetta");
+		a = new Attrezzo("grimaldello", 1);
+		sb.impostaStanzaAdiacente(Direzione.ovest, s);
 		
-		assertNull(stanzaBloccata.getStanzaAdiacente("nord"));
-	}
-	
-	//Test metodo getDescrizione
-	@Test
-	void testgetDescrizione() {
-		stanzaBloccata.addAttrezzo(attrezzo);	
-		assertEquals(stanzaBloccata.toString(),stanzaBloccata.getDescrizione());
-	}
-	@Test
-	void testgetDescrizioneNotEquals() {
-		assertNotEquals(stanzaBloccata.toString(),stanzaBloccata.getDescrizione());
-	}
-	@Test
-	void testgetDescrizioneNotNull() {
-		assertNotNull(stanzaBloccata.getDescrizione());
 	}
 
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testGetStanzaAdiacenteDirezioneBloccata() {
+		assertEquals(sb, sb.getStanzaAdiacente(Direzione.ovest));
+	}
+	
+	@Test
+	public void testGetStanzaAdiacenteDirezioneSbloccata() {
+		sb.addAttrezzo(a);
+		assertEquals(s, sb.getStanzaAdiacente(Direzione.ovest));
+		
+	}
+
+	@Test
+	public void testGetDescrizioneDirezioneSbloccata() {
+		sb.addAttrezzo(a);
+		assertEquals(sb.toString(), sb.getDescrizione());
+	}
+	
+	@Test
+	public void testGetDescrizioneDirezioneBloccata() {
+		String e = "Stanza bloccata nella direzione: ovest"+"\nPrendi il grimaldello e posalo nella stanza";
+		assertEquals(e, sb.getDescrizione());
+		
+	}
 
 }
